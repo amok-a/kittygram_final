@@ -15,7 +15,7 @@ services:
     restart: always
 
   backend:
-    image: ${DOCKERHUB_USERNAME}/kittygram_backend:latest
+    image: ${DOCKER_USERNAME}/kittygram_backend:latest
     volumes:
       - static:/app/static
       - media:/app/media
@@ -26,7 +26,7 @@ services:
     restart: always
 
   frontend:
-    image: ${DOCKERHUB_USERNAME}/kittygram_frontend:latest
+    image: ${DOCKER_USERNAME}/kittygram_frontend:latest
     volumes:
       - static:/app/static 
     depends_on:
@@ -34,7 +34,7 @@ services:
     restart: always
 
   gateway:
-    image: ${DOCKERHUB_USERNAME}/kittygram_gateway:latest
+    image: ${DOCKER_USERNAME}/kittygram_gateway:latest
     ports:
       - 9000:80
     volumes:
