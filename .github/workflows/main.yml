@@ -108,11 +108,10 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_backend:latest
 
-  # ВОССТАНОВЛЕННЫЙ JOB ДЛЯ GATEWAY
   build_gateway_and_push_to_docker_hub:
     name: Push gateway Docker image to DockerHub
     runs-on: ubuntu-latest
-    needs: [backend_tests, frontend_tests]  # Зависит от успешного прохождения тестов
+    needs: [backend_tests, frontend_tests]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -126,7 +125,7 @@ jobs:
       - name: Build and push gateway
         uses: docker/build-push-action@v4
         with:
-          context: ./nginx  # Или ./gateway, в зависимости от структуры проекта
+          context: ./nginx
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_gateway:latest
 
