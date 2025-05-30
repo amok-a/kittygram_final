@@ -87,7 +87,7 @@ jobs:
         DB_PASSWORD: kittygram_password
         SECRET_KEY: test-secret-key
         DEBUG: "True"
-      run: pytest
+      run: pytest tests/
 
   build_backend_and_push_to_docker_hub:
     name: Push backend Docker image to DockerHub
