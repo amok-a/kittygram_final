@@ -28,7 +28,7 @@ services:
   frontend:
     image: ${DOCKERHUB_USERNAME}/kittygram_frontend:latest
     volumes:
-      - static:/app/static
+      - static:/app/static  # Изменил на /app/static
     depends_on:
       - backend
     restart: always
