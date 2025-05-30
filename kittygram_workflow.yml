@@ -15,6 +15,7 @@ jobs:
       with:
         node-version: 18
         cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
 
     - name: Install frontend dependencies
       working-directory: ./frontend
@@ -85,7 +86,7 @@ jobs:
         DB_PASSWORD: kittygram_password
         SECRET_KEY: test-secret-key
         DEBUG: "True"
-      run: pytest  # Теперь тесты запускаются из корня проекта
+      run: pytest
 
   build_backend_and_push_to_docker_hub:
     name: Push backend Docker image to DockerHub
@@ -125,7 +126,7 @@ jobs:
       - name: Build and push gateway
         uses: docker/build-push-action@v4
         with:
-          context: ./nginx  # Или ./gateway, в зависимости от структуры проекта
+          context: ./nginx
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_gateway:latest
 
@@ -171,4 +172,4 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: "🚀 Kittygram успешно обновлен!"
+        message: "Kittygram успешно обновлен!"
