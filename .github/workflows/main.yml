@@ -12,20 +12,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set up nodeJS
-      # Это готовый воркфлоу для установки Node.js на раннер
       uses: actions/setup-node@v3
       with:
-        # Это параметр воркфлоу, указывающий нужную версию Node.js
         node-version: 18
 
     - name: Install dependencies
-      # Эта команда устанавливает зависимости для фронтенда
       run: |
         cd frontend/
         npm ci
 
     - name: Test frontend
-      # Запускаем тесты
       run: |
         cd frontend/
         npm run test
@@ -150,12 +146,12 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
+          sudo docker system prune -f
           cd kittygram
-          sudo docker compose -f docker-compose.production.yml pull
-          # Перезапускает все контейнеры в Docker Compose
           sudo docker compose -f docker-compose.production.yml down
+          sudo docker compose -f docker-compose.production.yml pull
+          
           sudo docker compose -f docker-compose.production.yml up -d
-          # Выполняет миграции и сбор статики
           sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate --noinput
           sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic --noinput
 
