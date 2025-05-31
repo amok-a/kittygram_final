@@ -146,7 +146,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
-          sudo docker system prune -f
+          sudo docker system prune -af
           cd kittygram
           free -h && echo "Свободная память перед деплоем"
           sudo docker compose -f docker-compose.production.yml down

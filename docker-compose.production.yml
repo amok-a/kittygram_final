@@ -31,7 +31,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 100M
+          memory: 96M
     depends_on:
       - db
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 32M
+          memory: 24M
     restart: unless-stopped
 
   gateway:
@@ -56,5 +56,5 @@ services:
     deploy:
       resources:
         limits:
-          memory: 32M
+          memory: 26M
     restart: unless-stopped
