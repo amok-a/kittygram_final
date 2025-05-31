@@ -1,3 +1,5 @@
+version: '3.8'
+
 volumes:
   static:
   media:
@@ -10,7 +12,14 @@ services:
       - pg_data:/var/lib/postgresql/data
     env_file:
       - .env
-    restart: always
+    environment:
+      POSTGRESQL_EFFECTIVE_CACHE_SIZE: 128MB
+      POSTGRESQL_SHARED_BUFFERS: 64MB
+    deploy:
+      resources:
+        limits:
+          memory: 400M
+    restart: unless-stopped
 
   backend:
     image: aamok/kittygram_backend:latest
@@ -19,17 +28,25 @@ services:
       - media:/app/media
     env_file:
       - .env
+    environment:
+      GUNICORN_CMD_ARGS: "--workers=1 --threads=2"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     depends_on:
       - db
-    restart: always
+    restart: unless-stopped
 
   frontend:
     image: aamok/kittygram_frontend:latest
     volumes:
-      - static:/app/collected_staticstatic 
-    depends_on:
-      - backend
-    restart: always
+      - static:/app/collected_static
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+    restart: unless-stopped
 
   gateway:
     image: aamok/kittygram_gateway:latest
@@ -38,7 +55,8 @@ services:
     volumes:
       - static:/static
       - media:/media
-    depends_on:
-      - backend
-      - frontend
-    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+    restart: unless-stopped
