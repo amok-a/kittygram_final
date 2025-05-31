@@ -31,7 +31,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 64M
+          memory: 512M
     depends_on:
       - db
     restart: unless-stopped
