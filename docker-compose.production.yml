@@ -17,7 +17,6 @@ services:
       resources:
         limits:
           memory: 96M
-    restart: unless-stopped
 
   backend:
     image: aamok/kittygram_backend:latest
@@ -34,7 +33,6 @@ services:
           memory: 512M
     depends_on:
       - db
-    restart: unless-stopped
 
   frontend:
     image: aamok/kittygram_frontend:latest
@@ -44,7 +42,6 @@ services:
       resources:
         limits:
           memory: 24M
-    restart: unless-stopped
 
   gateway:
     image: aamok/kittygram_gateway:latest
@@ -57,4 +54,3 @@ services:
       resources:
         limits:
           memory: 26M
-    restart: unless-stopped
