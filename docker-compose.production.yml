@@ -11,12 +11,12 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRESQL_EFFECTIVE_CACHE_SIZE: 128MB
+      POSTGRESQL_EFFECTIVE_CACHE_SIZE: 96MB
       POSTGRESQL_SHARED_BUFFERS: 64MB
     deploy:
       resources:
         limits:
-          memory: 128M
+          memory: 96M
     restart: unless-stopped
 
   backend:
@@ -31,7 +31,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 96M
+          memory: 64M
     depends_on:
       - db
     restart: unless-stopped
