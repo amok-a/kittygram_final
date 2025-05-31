@@ -152,7 +152,6 @@ jobs:
           sudo docker compose -f docker-compose.production.yml up -d db
           sleep 15
           sudo docker compose -f docker-compose.production.yml up -d backend
-          sleep 30
           sudo docker run --rm --network=kittygram_default \
             --memory=300m \
             -e DATABASE_URL=$DATABASE_URL \
