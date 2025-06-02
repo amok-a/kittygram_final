@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y-q*uq1!4$-89$'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['51.250.26.157', 'localhost', '127.0.0.1', 'kittygramgram.ddns.net']
 
@@ -56,12 +56,8 @@ WSGI_APPLICATION = 'kittygram_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'kittygram_db'),
-        'USER': os.getenv('POSTGRES_USER', 'kittygram_user'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', 'db'),
-        'PORT': os.getenv('DB_PORT', 5432),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
