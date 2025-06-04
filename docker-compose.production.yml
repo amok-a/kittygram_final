@@ -27,7 +27,7 @@ services:
       - kittygram_net
     image: aamok/kittygram_backend:latest
     volumes:
-      - static_volume:/app/collected_static
+      - static_volume:/backend_static
       - media:/app/media
     env_file:
       - .env
@@ -43,7 +43,7 @@ services:
       - kittygram_net
     image: aamok/kittygram_frontend:latest
     volumes:
-      - static:/app/collected_static
+      - static_volume:/frontend_static
     deploy:
       resources:
         limits:
