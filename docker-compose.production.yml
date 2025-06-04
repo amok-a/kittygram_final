@@ -21,7 +21,7 @@ services:
   backend:
     image: aamok/kittygram_backend:latest
     volumes:
-      - static_volume:/backend_static
+      - static_volume:/app/collected_static
       - media:/app/media
     env_file:
       - .env
