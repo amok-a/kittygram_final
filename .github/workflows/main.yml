@@ -147,19 +147,12 @@ jobs:
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           cd kittygram
+          sudo docker compose -f docker-compose.production.yml pull
           sudo docker compose -f docker-compose.production.yml down
-          docker system prune -af
-          sudo docker compose -f docker-compose.production.yml up -d db
-          sleep 15
-          sudo docker compose -f docker-compose.production.yml up -d backend
-          sudo docker run --rm --network=kittygram_default \
-            --memory=300m \
-            -e DATABASE_URL=$DATABASE_URL \
-            aamok/kittygram_backend:latest \
-            sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput"t
-          sudo docker compose -f docker-compose.production.yml up -d frontend gateway
-          docker ps -a
-          free -h
+          sudo docker compose -f docker-compose.production.yml up -d
+          sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+          sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+          sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
 
   send_message:
     runs-on: ubuntu-latest
