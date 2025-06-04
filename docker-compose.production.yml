@@ -1,10 +1,14 @@
 volumes:
-  static:
+  static_volume:
   media:
   pg_data:
-
+networks:
+  kittygram_net:
+    driver: bridge
 services:
   db:
+    networks:
+      - kittygram_net
     image: postgres:13
     volumes:
       - pg_data:/var/lib/postgresql/data
@@ -19,6 +23,8 @@ services:
           memory: 96M
 
   backend:
+    networks:
+      - kittygram_net
     image: aamok/kittygram_backend:latest
     volumes:
       - static_volume:/app/collected_static
@@ -33,6 +39,8 @@ services:
       - db
 
   frontend:
+    networks:
+      - kittygram_net
     image: aamok/kittygram_frontend:latest
     volumes:
       - static:/app/collected_static
@@ -42,6 +50,8 @@ services:
           memory: 128M
 
   gateway:
+    networks:
+      - kittygram_net
     image: aamok/kittygram_gateway:latest
     ports:
       - 9000:80

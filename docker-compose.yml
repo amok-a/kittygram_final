@@ -1,4 +1,3 @@
-version: '3'
 
 volumes:
   pg_data:
@@ -24,7 +23,7 @@ services:
     build: ./backend/
     env_file: .env
     volumes:
-      - static:/app/static
+      - static:/app/collected_static
       - media:/app/media
     depends_on:
       - db
@@ -32,9 +31,6 @@ services:
       resources:
         limits:
           memory: 300M
-    environment:
-      PYTHONUNBUFFERED: 1
-      GUNICORN_CMD_ARGS: "--workers=2 --threads=2"
 
   frontend:
     build: ./frontend/
@@ -48,12 +44,12 @@ services:
           memory: 32M
 
   gateway:
-    build: ./nginx/
+    build: ./gateway/
     env_file: .env
     ports:
       - 9000:80
     volumes:
-      - static:/static
+      - static:/app/collected_static
     deploy:
       resources:
         limits:
