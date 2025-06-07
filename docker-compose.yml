@@ -1,56 +1,29 @@
+version: '3'
 
 volumes:
   pg_data:
   static:
-  media:
 
 services:
   db:
     image: postgres:13
     volumes:
       - pg_data:/var/lib/postgresql/data
-    env_file:
-      - .env
-    environment:
-      POSTGRESQL_EFFECTIVE_CACHE_SIZE: 128MB
-      POSTGRESQL_SHARED_BUFFERS: 64MB
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-
   backend:
     build: ./backend/
     env_file: .env
     volumes:
-      - static:/app/collected_static
-      - media:/app/media
-    depends_on:
-      - db
-    deploy:
-      resources:
-        limits:
-          memory: 300M
-
+      - static:/static
   frontend:
-    build: ./frontend/
     env_file: .env
+    build: ./frontend/
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
-    deploy:
-      resources:
-        limits:
-          memory: 32M
-
   gateway:
-    build: ./gateway/
+    build: ./nginx/
     env_file: .env
     ports:
       - 9000:80
     volumes:
-      - static:/app/collected_static
-    deploy:
-      resources:
-        limits:
-          memory: 32M
+      - static:/static

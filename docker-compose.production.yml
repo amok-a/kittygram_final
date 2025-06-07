@@ -1,64 +1,44 @@
+version: '3'
+
 volumes:
+  pg_data:
   static_volume:
   media:
-  pg_data:
-networks:
-  kittygram_net:
-    driver: bridge
+
 services:
   db:
-    networks:
-      - kittygram_net
     image: postgres:13
+    env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
-    env_file:
-      - .env
-    environment:
-      POSTGRESQL_EFFECTIVE_CACHE_SIZE: 96MB
-      POSTGRESQL_SHARED_BUFFERS: 64MB
-    deploy:
-      resources:
-        limits:
-          memory: 96M
-
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   backend:
-    networks:
-      - kittygram_net
-    image: aamok/kittygram_backend:latest
+    image: aamok/kittygram_backend
+    env_file: .env
     volumes:
-      - static_volume:/backend_static
+      - static_volume:/static
       - media:/app/media
-    env_file:
-      - .env
-    deploy:
-      resources:
-        limits:
-          memory: 512M
     depends_on:
-      - db
-
+      db:
+        condition: service_healthy
   frontend:
-    networks:
-      - kittygram_net
-    image: aamok/kittygram_frontend:latest
+    env_file: .env
+    image: aamok/kittygram_frontend
+    command: cp -r /app/build/. /static/
     volumes:
-      - static_volume:/frontend_static
-    deploy:
-      resources:
-        limits:
-          memory: 128M
-
+      - static_volume:/static
   gateway:
-    networks:
-      - kittygram_net
-    image: aamok/kittygram_gateway:latest
+    image: aamok/kittygram_gateway
+    env_file: .env
     ports:
       - 9000:80
     volumes:
-      - static_volume:/staticfiles
+      - static_volume:/staticfiles/
       - media:/media
-    deploy:
-      resources:
-        limits:
-          memory: 26M
+    depends_on:
+      - backend
+      - frontend
