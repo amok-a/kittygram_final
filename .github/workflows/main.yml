@@ -166,4 +166,4 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: "Kittygram успешно обновлен!"
+        message: "Kittygram успешно обновлен!!"
